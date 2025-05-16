@@ -1,7 +1,7 @@
 from utils import execute_db, clear
 import time
 from class_menu import Menu
-from show_list_menu import SHOW_LIST_MENU
+from show_list_menu import SHOW_LIST_MENU, SHOW_LIST_MENU_ACTIONS
 
 def createList():
     clear()
@@ -21,15 +21,24 @@ def deleteList():
     execute_db("DELETE FROM `list`")  
   
 def showList():
-    clear()
-    print("=== Listes de course ===\n")
     DB = execute_db("SELECT `name` FROM list")
     list = DB.fetchall()
+
+    if len(list) == 0:
+        print("Aucune liste de course trouvée.")
+        time.sleep(0.5)
+        return
+
+    clear()
+    print("=== Listes de course ===\n")
     for l in list:
         print("•", l[0].capitalize())
     print()
     showListMenu = Menu(SHOW_LIST_MENU)
-    showListMenu.show_menu(False)
+    choice = showListMenu.show_menu(False)
+
+    if choice in SHOW_LIST_MENU_ACTIONS:
+        SHOW_LIST_MENU_ACTIONS[choice]()
 
 
 MAIN_MENU = [

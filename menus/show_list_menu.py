@@ -1,7 +1,7 @@
 from app.utils import execute_db, clear
 import time
 from menus.open_list_menu import OPEN_LIST_MENU, OPEN_LIST_MENU_ACTIONS
-from menu import Menu
+from app.menu import Menu
 
 def show_list(question: str = "Séléctionnez une liste: "):
     clear()

@@ -1,6 +1,6 @@
 from app.utils import execute_db, clear
 import time
-from menu import Menu
+from app.menu import Menu
 from menus.show_list_menu import SHOW_LIST_MENU, SHOW_LIST_MENU_ACTIONS
 
 def create_list():

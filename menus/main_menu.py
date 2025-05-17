@@ -20,7 +20,7 @@ def create_list(db):
             print("Erreur : cette liste existe déjà.")
             time.sleep(0.5)
         else:
-            db.execute("INSERT INTO `list` (`name`) VALUES (%s)", (list_name.lower()))
+            db.execute("INSERT INTO `list` (`name`) VALUES ('%s')" % list_name)
             print(f"Liste '{list_name.capitalize()}' créée avec succès.")
             time.sleep(0.5)
             show_list(db)
@@ -28,7 +28,36 @@ def create_list(db):
 
 def delete_list(db):
     clear()
-    db.execute("DELETE FROM `list`")  
+    cursor = db.execute("SELECT `name` FROM list")
+    list_name = cursor.fetchall()
+
+    if len(list_name) == 0: 
+        print("Aucune liste de course trouvée.")
+        time.sleep(0.5)
+        return
+    
+    print("=== Supprimer une liste de course ===\n")
+    for i, l in enumerate(list_name, start=1):
+        print(f"{i}. {l[0].capitalize()}")
+
+    while True:
+        input_name = input("\nSélectionnez une liste à supprimer (ou entrée pour annuler): ").strip()
+        if input_name == "":
+            break
+        if input_name.isdigit():
+            idx = int(input_name) - 1
+            if 0 <= idx < len(list_name):
+                input_name = list_name[idx][0]
+                db.execute("DELETE FROM `list` WHERE `name` = %s", (input_name,))
+                print(f"Liste '{input_name.capitalize()}' supprimée avec succès.")
+                time.sleep(0.5)
+                return
+            else:
+                print("Erreur : choix invalide.")
+                time.sleep(0.5)
+        else:
+            print("Erreur : choix invalide.")
+            time.sleep(0.5)
   
 def show_list(db):
     cursor = db.execute("SELECT `name` FROM list")

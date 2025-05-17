@@ -7,8 +7,8 @@ def delete_product(db):
 def show_products(db):
     print("Afficher les produits")
 
-def back():
-    return
+def backToShowListMenu():
+    return True
 
 OPEN_LIST_MENU = [
     "Ajouter un produit",

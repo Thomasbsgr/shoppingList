@@ -1,4 +1,4 @@
-from utils import clear, toCamelCase
+from app.utils import clear, toCamelCase
 import time
 
 class Menu:

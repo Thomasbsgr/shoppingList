@@ -1,7 +1,7 @@
-from utils import execute_db, clear
+from app.utils import execute_db, clear
 import time
-from open_list_menu import OPEN_LIST_MENU, OPEN_LIST_MENU_ACTIONS
-from class_menu import Menu
+from menus.open_list_menu import OPEN_LIST_MENU, OPEN_LIST_MENU_ACTIONS
+from menu import Menu
 
 def show_list(question: str = "Séléctionnez une liste: "):
     clear()
@@ -48,7 +48,7 @@ def open_list():
     
     OPEN_LIST_MENU.insert(0, f"=== Liste de course '{selected_list_name}' ===")
     open_list_menu = Menu(OPEN_LIST_MENU)
-    choice = open_list_menu.show_menu(False)
+    choice = open_list_menu.show_menu()
 
     if choice in OPEN_LIST_MENU_ACTIONS:
         OPEN_LIST_MENU_ACTIONS[choice]()

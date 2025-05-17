@@ -1,5 +1,5 @@
-from class_menu import Menu
-from main_menu import MAIN_MENU, MAIN_MENU_ACTIONS
+from menu import Menu
+from menus.main_menu import MAIN_MENU, MAIN_MENU_ACTIONS
 
 class App:
     def __init__(self):

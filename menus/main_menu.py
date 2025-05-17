@@ -1,7 +1,7 @@
-from utils import execute_db, clear
+from app.utils import execute_db, clear
 import time
-from class_menu import Menu
-from show_list_menu import SHOW_LIST_MENU, SHOW_LIST_MENU_ACTIONS
+from menu import Menu
+from menus.show_list_menu import SHOW_LIST_MENU, SHOW_LIST_MENU_ACTIONS
 
 def create_list():
     clear()

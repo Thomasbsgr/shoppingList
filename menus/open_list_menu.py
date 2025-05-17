@@ -1,10 +1,10 @@
-def add_product():
+def add_product(db):
     print("Ajouter un produit")
 
-def delete_product():
+def delete_product(db):
     print("Supprimer un produit")
 
-def show_products():
+def show_products(db):
     print("Afficher les produits")
 
 def back():
@@ -16,10 +16,3 @@ OPEN_LIST_MENU = [
     "Afficher les produits",
     "Retour"
 ]
-
-OPEN_LIST_MENU_ACTIONS = {
-    "ajouterUnProduit": add_product,
-    "supprimerUnProduit": delete_product,
-    "afficherLesProduits": show_products,
-    "retour": back
-}

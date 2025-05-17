@@ -1,4 +1,4 @@
-from app.utils import clear, toCamelCase
+from app.utils import clear, to_camel_case
 import time
 
 class Menu:
@@ -27,7 +27,7 @@ class Menu:
             if choice.isdigit():
                 idx = int(choice)
                 if 0 < idx < len(self.menu) - 1:
-                    return toCamelCase(self.menu[idx])
+                    return to_camel_case(self.menu[idx])
             elif choice.lower() == "e":
                 exit()
             print("Erreur : choix invalide.")

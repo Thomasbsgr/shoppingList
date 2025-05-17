@@ -1,11 +1,12 @@
-from app.utils import execute_db, clear
+from app.utils import clear
 import time
-from menus.open_list_menu import OPEN_LIST_MENU, OPEN_LIST_MENU_ACTIONS
+from menus.open_list_menu import OPEN_LIST_MENU
 from app.menu import Menu
+from menus.open_list_menu import add_product, delete_product, show_products, back
 
-def show_list(question: str = "Séléctionnez une liste: "):
+def show_list(db, question: str = "Séléctionnez une liste: "):
     clear()
-    DB = execute_db("SELECT `name` FROM list")
+    DB = db.execute("SELECT `name` FROM list")
     list_db = DB.fetchall()
     for i, l in enumerate(list_db, start=1):
         print(f"{i}. {l[0].capitalize()}")
@@ -24,8 +25,8 @@ def show_list(question: str = "Séléctionnez une liste: "):
                 time.sleep(0.5)
                 return False
 
-def rename_list():
-    selected_list_name = show_list("Sélectionnez une liste à renommer (ou entrée pour quitter): ")
+def rename_list(db):
+    selected_list_name = show_list(db, "Sélectionnez une liste à renommer (ou entrée pour quitter): ")
 
     if not selected_list_name:
         return
@@ -35,23 +36,29 @@ def rename_list():
         if new_name == "":
             return
         else:
-            execute_db(f"UPDATE `list` SET `name` = '{new_name}' WHERE `name` = '{selected_list_name}'")
+            db.execute(f"UPDATE `list` SET `name` = '{new_name}' WHERE `name` = '{selected_list_name}'")
             print(f"Liste '{selected_list_name}' renommée en '{new_name}'.")
             time.sleep(0.5)
             return
             
-def open_list():
-    selected_list_name = show_list("Sélectionnez une liste à ouvrir (ou entrée pour quitter): ")
+def open_list(db):
+    selected_list_name = show_list(db, "Sélectionnez une liste à ouvrir (ou entrée pour quitter): ")
 
     if not selected_list_name:
         return
     
-    OPEN_LIST_MENU.insert(0, f"=== Liste de course '{selected_list_name}' ===")
+    OPEN_LIST_MENU.insert(0, f"=== Liste de course '{selected_list_name.capitalize()}' ===")
     open_list_menu = Menu(OPEN_LIST_MENU)
     choice = open_list_menu.show_menu()
+    open_list_menu_action = {
+    "ajouterUnProduit": lambda: add_product(db),
+    "supprimerUnProduit": lambda: delete_product(db),
+    "afficherLesProduits": lambda: show_products(db),
+    "retour": back
+    }
 
-    if choice in OPEN_LIST_MENU_ACTIONS:
-        OPEN_LIST_MENU_ACTIONS[choice]()
+    if choice in open_list_menu_action:
+        open_list_menu_action[choice]()
 
 
 def back():
@@ -63,9 +70,3 @@ SHOW_LIST_MENU = [
     "Ouvrir une liste",
     "Retour"
 ]
-
-SHOW_LIST_MENU_ACTIONS = {
-    "renommerUneListe": rename_list,
-    "ouvrirUneListe": open_list,
-    "retour": back
-}

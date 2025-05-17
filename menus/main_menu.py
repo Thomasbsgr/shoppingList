@@ -20,7 +20,7 @@ def create_list(db):
             print("Erreur : cette liste existe déjà.")
             time.sleep(0.5)
         else:
-            db.execute(f"INSERT INTO `list` (`name`) VALUES ('{list_name.lower()}')")
+            db.execute("INSERT INTO `list` (`name`) VALUES (%s)", (list_name.lower()))
             print(f"Liste '{list_name.capitalize()}' créée avec succès.")
             time.sleep(0.5)
             show_list(db)

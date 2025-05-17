@@ -1,10 +1,9 @@
 from app.utils import clear
 import time
-from menus.open_list_menu import OPEN_LIST_MENU
+from menus.open_list_menu import OPEN_LIST_MENU, add_product, delete_product, show_products, back
 from app.menu import Menu
-from menus.open_list_menu import add_product, delete_product, show_products, back
 
-def show_list(db, question: str = "Séléctionnez une liste: "):
+def select_list(db, question: str = "Séléctionnez une liste: "):
     clear()
     DB = db.execute("SELECT `name` FROM list")
     list_db = DB.fetchall()
@@ -23,13 +22,9 @@ def show_list(db, question: str = "Séléctionnez une liste: "):
         else:
                 print("Erreur : choix invalide.")
                 time.sleep(0.5)
-                return False
 
 def rename_list(db):
-    selected_list_name = show_list(db, "Sélectionnez une liste à renommer (ou entrée pour quitter): ")
-
-    if not selected_list_name:
-        return
+    selected_list_name = select_list(db, "Sélectionnez une liste à renommer (ou entrée pour quitter): ")
 
     while True:
         new_name = input(f"\nEntrez le nouveau nom pour la liste '{selected_list_name}'\n(ou entrée pour quitter): ").strip()
@@ -42,10 +37,7 @@ def rename_list(db):
             return
             
 def open_list(db):
-    selected_list_name = show_list(db, "Sélectionnez une liste à ouvrir (ou entrée pour quitter): ")
-
-    if not selected_list_name:
-        return
+    selected_list_name = select_list(db, "Sélectionnez une liste à ouvrir (ou entrée pour quitter): ")
     
     OPEN_LIST_MENU.insert(0, f"=== Liste de course '{selected_list_name.capitalize()}' ===")
     open_list_menu = Menu(OPEN_LIST_MENU)

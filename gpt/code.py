@@ -81,7 +81,7 @@ def create_list(db):
             print("Erreur : cette liste existe déjà.")
             time.sleep(0.5)
         else:
-            db.execute(f"INSERT INTO `list` (`name`) VALUES ('{list_name.lower()}')")
+            db.execute("INSERT INTO `list` (`name`) VALUES (%s)", (list_name.lower()))
             print(f"Liste '{list_name.capitalize()}' créée avec succès.")
             time.sleep(0.5)
             show_list(db)
@@ -89,8 +89,8 @@ def create_list(db):
 
 def delete_list(db):
     clear()
-    db.execute("DELETE FROM `list`")
-
+    db.execute("DELETE FROM `list`")  
+  
 def show_list(db):
     cursor = db.execute("SELECT `name` FROM list")
     list_name = cursor.fetchall()
@@ -109,9 +109,9 @@ def show_list(db):
     choice = show_list_menu.show_menu(False)
 
     show_list_menu_action = {
-        "renommerUneListe": lambda: rename_list(db),
-        "ouvrirUneListe": lambda: open_list(db),
-        "retour": back
+    "renommerUneListe": lambda: rename_list(db),
+    "ouvrirUneListe": lambda: open_list(db),
+    "retour": back
     }
 
     if choice in show_list_menu_action:
@@ -133,7 +133,7 @@ import time
 from menus.open_list_menu import OPEN_LIST_MENU, add_product, delete_product, show_products, back
 from app.menu import Menu
 
-def show_list(db, question: str = "Séléctionnez une liste: "):
+def select_list(db, question: str = "Séléctionnez une liste: "):
     clear()
     DB = db.execute("SELECT `name` FROM list")
     list_db = DB.fetchall()
@@ -150,15 +150,11 @@ def show_list(db, question: str = "Séléctionnez une liste: "):
                 list_name = list_db[idx][0]
                 return list_name
         else:
-            print("Erreur : choix invalide.")
-            time.sleep(0.5)
-            return False
+                print("Erreur : choix invalide.")
+                time.sleep(0.5)
 
 def rename_list(db):
-    selected_list_name = show_list(db, "Sélectionnez une liste à renommer (ou entrée pour quitter): ")
-
-    if not selected_list_name:
-        return
+    selected_list_name = select_list(db, "Sélectionnez une liste à renommer (ou entrée pour quitter): ")
 
     while True:
         new_name = input(f"\nEntrez le nouveau nom pour la liste '{selected_list_name}'\n(ou entrée pour quitter): ").strip()
@@ -169,25 +165,23 @@ def rename_list(db):
             print(f"Liste '{selected_list_name}' renommée en '{new_name}'.")
             time.sleep(0.5)
             return
-
+            
 def open_list(db):
-    selected_list_name = show_list(db, "Sélectionnez une liste à ouvrir (ou entrée pour quitter): ")
-
-    if not selected_list_name:
-        return
-
+    selected_list_name = select_list(db, "Sélectionnez une liste à ouvrir (ou entrée pour quitter): ")
+    
     OPEN_LIST_MENU.insert(0, f"=== Liste de course '{selected_list_name.capitalize()}' ===")
     open_list_menu = Menu(OPEN_LIST_MENU)
     choice = open_list_menu.show_menu()
     open_list_menu_action = {
-        "ajouterUnProduit": lambda: add_product(db),
-        "supprimerUnProduit": lambda: delete_product(db),
-        "afficherLesProduits": lambda: show_products(db),
-        "retour": back
+    "ajouterUnProduit": lambda: add_product(db),
+    "supprimerUnProduit": lambda: delete_product(db),
+    "afficherLesProduits": lambda: show_products(db),
+    "retour": back
     }
 
     if choice in open_list_menu_action:
         open_list_menu_action[choice]()
+
 
 def back():
     return

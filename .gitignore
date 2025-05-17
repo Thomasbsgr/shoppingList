@@ -1,0 +1,53 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# === Environnements virtuels ===
+env/
+venv/
+.venv/
+
+# === Fichiers de configuration locaux ===
+*.env
+*.ini
+*.cfg
+*.local
+*.log
+
+# === IDEs ===
+.vscode/
+.idea/
+*.code-workspace
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === PyInstaller ===
+dist/
+build/
+*.spec
+
+# === Test/coverage ===
+.coverage
+.cache/
+nosetests.xml
+coverage.xml
+htmlcov/
+.tox/
+.pytest_cache/
+
+# === Packages ===
+*.egg
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# === Jupyter (si jamais) ===
+.ipynb_checkpoints/
+
+# === SQLite (si jamais) ===
+*.sqlite
+*.db

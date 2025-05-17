@@ -3,39 +3,39 @@ import time
 from class_menu import Menu
 from show_list_menu import SHOW_LIST_MENU, SHOW_LIST_MENU_ACTIONS
 
-def createList():
+def create_list():
     clear()
     print("=== Création d'une liste de course ===\n")
-    name = input("Nom de la liste (entrée pour annuler): ").strip()
-    if name == "":
+    list_name = input("Nom de la liste (entrée pour annuler): ").strip()
+    if list_name == "":
         return
-    elif len(name) > 32:
+    elif len(list_name) > 32:
         print("Erreur : choix invalide.")
         time.sleep(0.5)
         return
-    execute_db(f"INSERT INTO `list` (`name`) VALUES ('{name}')")
-    showList()
+    execute_db(f"INSERT INTO `list` (`name`) VALUES ('{list_name}')")
+    show_list()
 
-def deleteList():
+def delete_list():
     clear()
     execute_db("DELETE FROM `list`")  
   
-def showList():
+def show_list():
     DB = execute_db("SELECT `name` FROM list")
-    list = DB.fetchall()
+    list_name = DB.fetchall()
 
-    if len(list) == 0:
+    if len(list_name) == 0:
         print("Aucune liste de course trouvée.")
         time.sleep(0.5)
         return
 
     clear()
     print("=== Listes de course ===\n")
-    for l in list:
+    for l in list_name:
         print("•", l[0].capitalize())
     print()
-    showListMenu = Menu(SHOW_LIST_MENU)
-    choice = showListMenu.show_menu(False)
+    show_list_menu = Menu(SHOW_LIST_MENU)
+    choice = show_list_menu.show_menu(False)
 
     if choice in SHOW_LIST_MENU_ACTIONS:
         SHOW_LIST_MENU_ACTIONS[choice]()
@@ -49,7 +49,7 @@ MAIN_MENU = [
 ]
 
 MAIN_MENU_ACTIONS = {
-    "creerUneListe": createList,
-    "supprimerUneListe": deleteList,
-    "afficherLesListes": showList
+    "creerUneListe": create_list,
+    "supprimerUneListe": delete_list,
+    "afficherLesListes": show_list
 }

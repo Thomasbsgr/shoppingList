@@ -4,12 +4,18 @@ import re
 import json
 import mysql.connector
 
-CONN = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="",
-  database="shopping_list_app"
-)
+while True:
+    try:
+        CONN = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="shopping_list_app"
+        )
+        break
+    except mysql.connector.Error as e:
+        print(f"[ERREUR CONNEXION DB] {e}")
+        input()
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -37,8 +43,13 @@ def sauvegarder_liste(path, liste):
         json.dump(liste, f, indent=4)
 
 def execute_db(query):
-    db = CONN.cursor()
-    db.execute(query)
-    if query.strip().split(" ")[0].upper() != "SELECT":
-      CONN.commit()
-    return db
+    while True:
+        try:
+            db = CONN.cursor()
+            db.execute(query)
+            if query.strip().split(" ")[0].upper() != "SELECT":
+                CONN.commit()
+            return db
+        except mysql.connector.Error as err:
+            print(f"[ERREUR SQL] {err}")
+            input("Appuyez sur Entrée pour continuer...")

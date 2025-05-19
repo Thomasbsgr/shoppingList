@@ -5,7 +5,7 @@ from menus.show_list_menu import SHOW_LIST_MENU, rename_list, open_list, back
 
 def create_list(db):
     clear()
-    print("=== Création d'une liste de course ===\n")
+    print("=== ddCréation d'une liste de course ===\n")
     while True:
         list_name = input("Nom de la liste (entrée pour annuler): ").strip()
         cursor = db.execute("SELECT `name` FROM list")
